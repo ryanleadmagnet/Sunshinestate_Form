@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #fdb236;
+  --color-primary-hover: #e59e2a;
+  --color-solar-yellow: #fdb236;
+  --color-solar-orange: #FF8A00;
+  --radius-lg: 10px;
+}
+
+:root {
+  --background: transparent;
+  --foreground: #ffffff;
+}
+
+body {
+  color: var(--foreground);
+  background: transparent;
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Styles */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 10px 0 rgba(253, 178, 54, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-outline {
+  border: 1px solid #262626;
+  background-color: transparent;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: #171717;
+}
+
+.input-field {
+  display: flex;
+  height: 3.5rem;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid #333333;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0 1rem;
+  font-size: 1.125rem;
+  outline: none;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.input-field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+/* Option-as-button style */
+.card-option {
+  position: relative;
+  display: flex;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1px solid #262626;
+  padding: 1.25rem;
+  background-color: #fdb236;
+  color: white;
+  transition: all 0.2s;
+  justify-content: center;
+  text-align: center;
+  font-weight: 600;
+}
+
+.card-option:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.card-option:active {
+  transform: scale(0.98);
+}
+
+.card-option-selected {
+  outline: 2px solid white;
+}
+
+/* Single line progress bar */
+.progress-bar-container {
+  height: 4px;
+  width: 100%;
+  background-color: #262626;
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Centered content */
+.align-center {
+  text-align: center;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-step {
+  animation: slideUp 0.4s ease-out forwards;
+}
