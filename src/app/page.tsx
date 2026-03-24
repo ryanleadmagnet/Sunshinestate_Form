@@ -138,7 +138,7 @@ const STEPS = [
     placeholder: "04XXXXXXXX",
     inputMode: "tel",
     maxLength: 10,
-    buttonLabel: "Get My Free Quote",
+    buttonLabel: "Submit",
     validate: (val: string) => /^04\d{8}$/.test(val) ? null : "Phone must be 10 digits and start with 04.",
   },
 ];
