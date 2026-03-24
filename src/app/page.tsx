@@ -176,7 +176,7 @@ export default function SolarForm() {
       }
     }
 
-    let updatedData = { ...formData, platform };
+    let updatedData: Record<string, any> = { ...formData, platform };
     if (typeof value === "object" && value !== null) {
       updatedData = { ...updatedData, ...value };
     } else {
