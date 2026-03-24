@@ -12,13 +12,24 @@ export async function POST(request: Request) {
 
     // 1. Setup Google Auth
     const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-    const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n').replace(/"/g, '');
+    const rawKey = process.env.GOOGLE_PRIVATE_KEY;
+    console.log('Key Status:', rawKey ? `Present (length: ${rawKey.length})` : 'Missing');
+    
+    // Robust parsing for different quote/escaped-newline scenarios
+    const formattedKey = rawKey
+      ?.replace(/^"(.*)"$/, '$1') // Remove surrounding quotes if they exist
+      ?.replace(/\\n/g, '\n');   // Replace literal \n with real newline
+
+    const GOOGLE_PRIVATE_KEY = formattedKey;
     const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 
     if (!GOOGLE_SERVICE_ACCOUNT_EMAIL || !GOOGLE_PRIVATE_KEY || !SPREADSHEET_ID) {
-      console.warn('Google Sheets credentials not set correctly.');
-      // Still return success for demo purposes if needed or handle error
-      return NextResponse.json({ success: false, message: 'Google Sheets credentials not configured.' }, { status: 500 });
+      console.error('Missing credentials:', { 
+        email: !!GOOGLE_SERVICE_ACCOUNT_EMAIL, 
+        key: !!GOOGLE_PRIVATE_KEY, 
+        sheet: !!SPREADSHEET_ID 
+      });
+      return NextResponse.json({ success: false, message: 'Configuration error: Missing credentials.' }, { status: 500 });
     }
 
     const serviceAccountAuth = new JWT({
