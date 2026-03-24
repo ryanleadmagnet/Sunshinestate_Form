@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${roboto.className} text-white min-h-screen selection:bg-[#fdb236]/30`}>
-        <div className="flex min-h-[100dvh] flex-col items-center justify-start p-4 sm:p-8 pt-0 sm:pt-4">
+        <div className="flex min-h-[100dvh] flex-col items-center justify-start pt-8 sm:pt-12 px-4 sm:px-8">
           <main className="w-full max-w-[500px] mx-auto overflow-hidden relative">
             {children}
           </main>

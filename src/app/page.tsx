@@ -258,7 +258,7 @@ export default function SolarForm() {
   }
 
   return (
-    <div className="relative min-h-[500px] flex flex-col pt-4">
+    <div className="relative min-h-[500px] flex flex-col">
       {/* Progress Header */}
       <div className="px-1 mb-10 w-full">
         <div className="progress-bar-container">
