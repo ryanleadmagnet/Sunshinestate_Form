@@ -15,10 +15,13 @@ export async function POST(request: Request) {
     const rawKey = process.env.GOOGLE_PRIVATE_KEY;
     console.log('Key Status:', rawKey ? `Present (length: ${rawKey.length})` : 'Missing');
     
-    // Robust parsing for different quote/escaped-newline scenarios
+    // Robust parsing for different quote/escaped-newline scenarios and invisible DOS/Windows characters
     const formattedKey = rawKey
-      ?.replace(/^"|"$/g, '')    // Safely remove surrounding quotes even across multi-line
-      ?.replace(/\\n/g, '\n');   // Replace literal \n with real newline just in case
+      ?.replace(/^"|"$/g, '')      // Safely remove surrounding quotes even across multi-line
+      ?.replace(/\\n/g, '\n')     // Replace literal \n with real newline just in case
+      ?.replace(/\\r/g, '')       // Replace literal \r 
+      ?.replace(/\r/g, '')        // Strip actual invisible carriage returns (OpenSSL 3.x crasher)
+      ?.trim();                   // Remove trailing spaces or empty newlines
 
     const GOOGLE_PRIVATE_KEY = formattedKey;
     const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
@@ -80,6 +83,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, message: 'Form submitted successfully' });
   } catch (error: any) {
     console.error('Error submitting to spreadsheet:', error);
+    
+    // Check if it's the specific OpenSSL Decoder error caused by Vercel environment formatting
+    if (error.message && error.message.includes('DECODER routines')) {
+      const dbgKey = process.env.GOOGLE_PRIVATE_KEY || "";
+      const parsed = dbgKey.replace(/^"|"$/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '').replace(/\r/g, '').trim();
+      
+      const debugInfo = `Raw Length: ${dbgKey.length} | Parsed starts with: ${parsed.substring(0, 31)} | Parsed ends with: ${parsed.substring(Math.max(0, parsed.length - 28))}`;
+      
+      return NextResponse.json({ 
+        success: false, 
+        message: `Vercel PEM Key Error (DECODER unsupported). Please check your key formatting in Vercel settings. Debug info: ${debugInfo}` 
+      }, { status: 500 });
+    }
+
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   }
 }
