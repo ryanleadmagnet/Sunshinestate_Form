@@ -176,9 +176,11 @@ export default function SolarForm() {
       }
     }
 
-    const updatedData = { ...formData, platform, ...value };
-    if (typeof value !== "object") {
-      updatedData[currentStep.id] = value;
+    let updatedData = { ...formData, platform };
+    if (typeof value === "object" && value !== null) {
+      updatedData = { ...updatedData, ...value };
+    } else {
+      updatedData = { ...updatedData, [currentStep.id]: value };
     }
     setFormData(updatedData);
 
