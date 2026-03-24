@@ -200,14 +200,19 @@ export default function SolarForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData),
       })
-        .then(() => {
+        .then(async (res) => {
+          if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.message || "Spreadsheet connection failed");
+          }
           setIsSubmitting(false);
           setIsFinished(true);
         })
         .catch((err) => {
           console.error("Submission error:", err);
           setIsSubmitting(false);
-          setIsFinished(true); // Still finish for demo
+          setErrorMsg(err.message || "Something went wrong. Please try again.");
+          // IMPORTANT: Do not set isFinished to true so it doesn't redirect on failure.
         });
     }
   };
@@ -258,7 +263,7 @@ export default function SolarForm() {
   }
 
   return (
-    <div className="relative min-h-[500px] flex flex-col">
+    <div className="relative min-h-[500px] flex flex-col pt-4">
       {/* Progress Header */}
       <div className="px-1 mb-10 w-full">
         <div className="progress-bar-container">
