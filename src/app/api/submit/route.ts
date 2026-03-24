@@ -24,12 +24,16 @@ export async function POST(request: Request) {
     const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 
     if (!GOOGLE_SERVICE_ACCOUNT_EMAIL || !GOOGLE_PRIVATE_KEY || !SPREADSHEET_ID) {
-      console.error('Missing credentials:', { 
-        email: !!GOOGLE_SERVICE_ACCOUNT_EMAIL, 
-        key: !!GOOGLE_PRIVATE_KEY, 
-        sheet: !!SPREADSHEET_ID 
-      });
-      return NextResponse.json({ success: false, message: 'Configuration error: Missing credentials.' }, { status: 500 });
+      const missing = [];
+      if (!GOOGLE_SERVICE_ACCOUNT_EMAIL) missing.push('GOOGLE_SERVICE_ACCOUNT_EMAIL');
+      if (!GOOGLE_PRIVATE_KEY) missing.push('GOOGLE_PRIVATE_KEY');
+      if (!SPREADSHEET_ID) missing.push('GOOGLE_SHEET_ID');
+      
+      console.error('Missing credentials on Vercel:', missing);
+      return NextResponse.json(
+        { success: false, message: `Configuration error: Missing credentials - [ ${missing.join(', ')} ]` }, 
+        { status: 500 }
+      );
     }
 
     const serviceAccountAuth = new JWT({
