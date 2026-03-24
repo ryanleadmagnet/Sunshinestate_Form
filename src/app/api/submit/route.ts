@@ -73,7 +73,12 @@ export async function POST(request: Request) {
       LastName: data.lastName || '',
       Email: data.email || '',
       Phone: data.phone || '',
-      Platform: data.platform || '', // Capture the new UTM parameter
+      Platform: data.platform || '', 
+      UTM_Source: data.utm_source || '',
+      UTM_Medium: data.utm_medium || '',
+      UTM_Campaign: data.utm_campaign || '',
+      UTM_Term: data.utm_term || '',
+      UTM_Content: data.utm_content || '',
     };
 
     // 3. Append Row

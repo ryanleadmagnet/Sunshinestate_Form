@@ -150,15 +150,22 @@ export default function SolarForm() {
   const [isFinished, setIsFinished] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [utmData, setUtmData] = useState<Record<string, string>>({});
   const [mounted, setMounted] = useState(false);
-  const [platform, setPlatform] = useState<string>("");
 
   useEffect(() => {
     setMounted(true);
-    // Capture "platform" UTM parameter from URL
+    // Capture all relevant UTM parameters from URL
     const params = new URLSearchParams(window.location.search);
-    const plat = params.get("platform");
-    if (plat) setPlatform(plat);
+    const utms: Record<string, string> = {};
+    const trackingKeys = ["platform", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+    
+    trackingKeys.forEach(key => {
+      const val = params.get(key);
+      if (val) utms[key] = val;
+    });
+    
+    setUtmData(utms);
   }, []);
 
   const currentStep = STEPS[currentStepIdx];
@@ -176,7 +183,7 @@ export default function SolarForm() {
       }
     }
 
-    let updatedData: Record<string, any> = { ...formData, platform };
+    let updatedData: Record<string, any> = { ...formData, ...utmData };
     if (typeof value === "object" && value !== null) {
       updatedData = { ...updatedData, ...value };
     } else {
