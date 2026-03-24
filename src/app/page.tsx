@@ -306,6 +306,7 @@ export default function SolarForm() {
 
             {currentStep.type === "text" && (
               <form 
+                autoComplete="off"
                 onSubmit={(e) => {
                   e.preventDefault();
                   const val = (e.currentTarget.elements.namedItem("val") as HTMLInputElement).value;
@@ -314,10 +315,11 @@ export default function SolarForm() {
                 className="space-y-4"
               >
                 <div className="relative">
-                  <input
+                   <input
                     name="val"
                     type={currentStep.inputMode === "email" ? "email" : "text"}
                     autoFocus
+                    autoComplete="off"
                     placeholder={currentStep.placeholder}
                     inputMode={currentStep.inputMode as any}
                     maxLength={currentStep.maxLength}
@@ -343,6 +345,7 @@ export default function SolarForm() {
 
             {currentStep.type === "composite" && (
               <form 
+                autoComplete="off"
                 onSubmit={(e) => {
                   e.preventDefault();
                   const results: Record<string, string> = {};
@@ -358,9 +361,10 @@ export default function SolarForm() {
                 className="space-y-4"
               >
                 {currentStep.fields?.map((f) => (
-                  <input
+                   <input
                     key={f.id}
                     name={f.id}
+                    autoComplete="off"
                     placeholder={f.placeholder}
                     className="input-field text-center px-4"
                   />
