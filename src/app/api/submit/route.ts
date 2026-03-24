@@ -17,8 +17,8 @@ export async function POST(request: Request) {
     
     // Robust parsing for different quote/escaped-newline scenarios
     const formattedKey = rawKey
-      ?.replace(/^"(.*)"$/, '$1') // Remove surrounding quotes if they exist
-      ?.replace(/\\n/g, '\n');   // Replace literal \n with real newline
+      ?.replace(/^"|"$/g, '')    // Safely remove surrounding quotes even across multi-line
+      ?.replace(/\\n/g, '\n');   // Replace literal \n with real newline just in case
 
     const GOOGLE_PRIVATE_KEY = formattedKey;
     const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
