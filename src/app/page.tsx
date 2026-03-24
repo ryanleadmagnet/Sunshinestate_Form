@@ -166,7 +166,7 @@ export default function SolarForm() {
 
   const handleNext = (value: any) => {
     setErrorMsg(null);
-    
+
     // Validate if applicable
     if (currentStep.validate && typeof value === "string") {
       const error = currentStep.validate(value);
@@ -198,15 +198,15 @@ export default function SolarForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData),
       })
-      .then(() => {
-        setIsSubmitting(false);
-        setIsFinished(true);
-      })
-      .catch((err) => {
-        console.error("Submission error:", err);
-        setIsSubmitting(false);
-        setIsFinished(true); // Still finish for demo
-      });
+        .then(() => {
+          setIsSubmitting(false);
+          setIsFinished(true);
+        })
+        .catch((err) => {
+          console.error("Submission error:", err);
+          setIsSubmitting(false);
+          setIsFinished(true); // Still finish for demo
+        });
     }
   };
 
@@ -230,7 +230,7 @@ export default function SolarForm() {
         <p className="text-xl text-neutral-400 leading-relaxed">
           We can't help you any further as the owner of the property must make the decision to go solar.
         </p>
-        <button 
+        <button
           onClick={() => { setIsDeadEnd(false); setCurrentStepIdx(0); }}
           className="btn btn-outline h-14 px-8 mt-12 rounded-xl text-lg w-full max-w-[300px]"
         >
@@ -260,8 +260,8 @@ export default function SolarForm() {
       {/* Progress Header */}
       <div className="px-1 mb-10 w-full">
         <div className="progress-bar-container">
-          <div 
-            className="progress-bar-fill" 
+          <div
+            className="progress-bar-fill"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -305,7 +305,7 @@ export default function SolarForm() {
             )}
 
             {currentStep.type === "text" && (
-              <form 
+              <form
                 autoComplete="off"
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -315,7 +315,7 @@ export default function SolarForm() {
                 className="space-y-4"
               >
                 <div className="relative">
-                   <input
+                  <input
                     name="val"
                     type={currentStep.inputMode === "email" ? "email" : "text"}
                     autoFocus
@@ -329,7 +329,7 @@ export default function SolarForm() {
                     )}
                   />
                   {errorMsg && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}
                       className="text-red-500 text-sm mt-2 flex items-center justify-center gap-1 font-medium"
                     >
@@ -344,7 +344,7 @@ export default function SolarForm() {
             )}
 
             {currentStep.type === "composite" && (
-              <form 
+              <form
                 autoComplete="off"
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -361,7 +361,7 @@ export default function SolarForm() {
                 className="space-y-4"
               >
                 {currentStep.fields?.map((f) => (
-                   <input
+                  <input
                     key={f.id}
                     name={f.id}
                     autoComplete="off"
@@ -370,7 +370,7 @@ export default function SolarForm() {
                   />
                 ))}
                 {errorMsg && (
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}
                     className="text-red-500 text-sm flex items-center justify-center gap-1 font-medium"
                   >
@@ -390,8 +390,8 @@ export default function SolarForm() {
       {isSubmitting && (
         <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center text-center p-8 animate-step rounded-3xl">
           <Loader2 className="w-12 h-12 text-[#fdb236] animate-spin mb-6" />
-          <h3 className="text-2xl font-bold mb-2">Calculating Your Benefits</h3>
-          <p className="text-neutral-400">Comparing local market rates & incentives...</p>
+          <h3 className="text-2xl font-bold mb-2">Submitting the form</h3>
+          <p className="text-neutral-400">Please wait...</p>
         </div>
       )}
     </div>
