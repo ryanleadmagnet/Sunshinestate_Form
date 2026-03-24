@@ -2,20 +2,20 @@
 
 @theme {
   --color-primary: #fdb236;
-  --color-primary-hover: #e59e2a;
+  --color-primary-hover: #ee8e47;
   --color-solar-yellow: #fdb236;
   --color-solar-orange: #FF8A00;
   --radius-lg: 10px;
 }
 
 :root {
-  --background: transparent;
+  --background: #000000;
   --foreground: #ffffff;
 }
 
 body {
   color: var(--foreground);
-  background: transparent;
+  background: var(--background);
   font-family: 'Roboto', sans-serif;
   overflow-x: hidden;
 }
@@ -107,7 +107,7 @@ body {
 .progress-bar-container {
   height: 4px;
   width: 100%;
-  background-color: #262626;
+  background-color: #dddddd;
   border-radius: 9999px;
   overflow: hidden;
   position: relative;
@@ -128,8 +128,17 @@ body {
 }
 
 @keyframes slideUp {
-  from { transform: translateY(15px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(15px);
+    opacity:
+      0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity:
+      1;
+  }
 }
 
 .animate-step {

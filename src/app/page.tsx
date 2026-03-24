@@ -151,9 +151,14 @@ export default function SolarForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [platform, setPlatform] = useState<string>("");
 
   useEffect(() => {
     setMounted(true);
+    // Capture "platform" UTM parameter from URL
+    const params = new URLSearchParams(window.location.search);
+    const plat = params.get("platform");
+    if (plat) setPlatform(plat);
   }, []);
 
   const currentStep = STEPS[currentStepIdx];
@@ -171,7 +176,7 @@ export default function SolarForm() {
       }
     }
 
-    const updatedData = { ...formData, ...value };
+    const updatedData = { ...formData, platform, ...value };
     if (typeof value !== "object") {
       updatedData[currentStep.id] = value;
     }

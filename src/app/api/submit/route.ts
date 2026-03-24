@@ -11,14 +11,14 @@ export async function POST(request: Request) {
     console.log(data);
 
     // 1. Setup Google Auth
-    // These environment variables need to be set in your .env.local or deployment platform
     const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
     const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
     const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 
     if (!GOOGLE_SERVICE_ACCOUNT_EMAIL || !GOOGLE_PRIVATE_KEY || !SPREADSHEET_ID) {
-      console.warn('Google Sheets credentials not set. Logging data only.');
-      return NextResponse.json({ success: true, message: 'Data logged to server (Sheet not configured)' });
+      console.warn('Google Sheets credentials not set correctly.');
+      // Still return success for demo purposes if needed or handle error
+      return NextResponse.json({ success: false, message: 'Google Sheets credentials not configured.' }, { status: 500 });
     }
 
     const serviceAccountAuth = new JWT({
@@ -30,12 +30,18 @@ export async function POST(request: Request) {
     const doc = new GoogleSpreadsheet(SPREADSHEET_ID, serviceAccountAuth);
     
     await doc.loadInfo();
-    const sheet = doc.sheetsByIndex[0]; // Assuming first sheet
+    
+    // Select the specifically named tab "GetSolar"
+    const sheet = doc.sheetsByTitle['GetSolar'];
+    
+    if (!sheet) {
+      console.error('Tab "GetSolar" not found in spreadsheet.');
+      return NextResponse.json({ success: false, message: 'Worksheet "GetSolar" not found.' }, { status: 404 });
+    }
 
     // 2. Prepare Row Data
-    // Map the form IDs to your spreadsheet column headers
     const row = {
-      Timestamp: new Date().toLocaleString(),
+      Timestamp: new Date().toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' }),
       Residency: data.residency || '',
       HomeAge: data.age || '',
       ExistingSolar: data.existing_solar || '',
@@ -49,11 +55,12 @@ export async function POST(request: Request) {
       LastName: data.lastName || '',
       Email: data.email || '',
       Phone: data.phone || '',
+      Platform: data.platform || '', // Capture the new UTM parameter
     };
 
     // 3. Append Row
     await sheet.addRow(row);
-    console.log('Successfully added row to Google Sheet');
+    console.log('Successfully added row to GetSolar sheet');
 
     return NextResponse.json({ success: true, message: 'Form submitted successfully' });
   } catch (error: any) {
