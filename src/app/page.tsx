@@ -46,7 +46,7 @@ const STEPS = [
   {
     id: "shading",
     question: "Do you have any shading issues over the roof?",
-    caption: "Property shading that affects sunlight exposure:",
+    caption: "Please indicate whether your property has any shading that affects sunlight exposure:",
     type: "choice",
     options: [
       { label: "No shading issues", value: "none" },
@@ -58,7 +58,7 @@ const STEPS = [
   {
     id: "usage",
     question: "When do you use most of your power?",
-    caption: "Time of day when consumption is highest:",
+    caption: "Please select the time of day when you use the most electricity:",
     type: "choice",
     options: [
       { label: "Mostly day time", value: "day" },
@@ -69,7 +69,7 @@ const STEPS = [
   {
     id: "bill",
     question: "How much is your power bill?",
-    caption: "Average quarterly power bill cost:",
+    caption: "Please select the average cost your power bill:",
     type: "choice",
     options: [
       { label: "$0 - $300", value: "0-300" },
@@ -80,7 +80,7 @@ const STEPS = [
   {
     id: "size",
     question: "Which solar system size are you considering?",
-    caption: "System size you are interested in:",
+    caption: "Please select the system size you're interested in:",
     type: "choice",
     options: [
       { label: "6.6kW", value: "6.6kw" },
@@ -93,7 +93,7 @@ const STEPS = [
   {
     id: "battery",
     question: "Would you like to add a solar battery to your system?",
-    caption: "Select if you'd like a solar/battery package:",
+    caption: "Please select if you'd like a solar/battery package:",
     type: "choice",
     options: [
       { label: "Yes", value: "yes" },
@@ -104,7 +104,6 @@ const STEPS = [
   {
     id: "postcode",
     question: "Please enter your postcode:",
-    caption: "We need this to localise your incentives & quote.",
     type: "text",
     placeholder: "Your Postcode",
     inputMode: "numeric",
@@ -113,8 +112,7 @@ const STEPS = [
   },
   {
     id: "name",
-    question: "What is your name?",
-    caption: "Please enter your first and last name.",
+    question: "What's your first & last name?",
     type: "composite",
     fields: [
       { id: "firstName", placeholder: "First Name" },
@@ -124,7 +122,6 @@ const STEPS = [
   {
     id: "email",
     question: "What's your best email?",
-    caption: "Where should we send your detailed quote?",
     type: "text",
     placeholder: "Your Email Address",
     inputMode: "email",
@@ -132,8 +129,7 @@ const STEPS = [
   },
   {
     id: "phone",
-    question: "What's your best contact number?",
-    caption: "To finalise your savings & quote calculation.",
+    question: "Last question. What's your best contact number?",
     type: "text",
     placeholder: "04XXXXXXXX",
     inputMode: "tel",
@@ -159,12 +155,12 @@ export default function SolarForm() {
     const params = new URLSearchParams(window.location.search);
     const utms: Record<string, string> = {};
     const trackingKeys = ["platform", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
-    
+
     trackingKeys.forEach(key => {
       const val = params.get(key);
       if (val) utms[key] = val;
     });
-    
+
     setUtmData(utms);
   }, []);
 
@@ -292,11 +288,11 @@ export default function SolarForm() {
         >
           {/* Question Section */}
           <div className="mb-10 w-full">
-            <h2 className="text-3xl font-bold tracking-tight mb-4 leading-snug">
+            <h2 className="text-2xl font-bold tracking-tight mb-4 leading-snug">
               {currentStep.question}
             </h2>
             {currentStep.caption && (
-              <p className="text-lg text-neutral-500 leading-relaxed font-light">
+              <p className="text-base text-whit leading-relaxed font-light">
                 {currentStep.caption}
               </p>
             )}
